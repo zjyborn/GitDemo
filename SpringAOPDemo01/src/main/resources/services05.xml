@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<bean class="com.hwua.bean.Target" id="target"></bean>
+	<bean class="com.hwua.bean.Orgin" id="orgin"></bean>
+	<bean class="com.hwua.test05.TestAround" id="testAround"></bean>
+	<!-- AOP配置根标签 -->
+	<aop:config>
+		<!-- 切入点配置：expression切入点表达式 -->
+	<!-- <aop:pointcut expression="within(com.hwua.bean.*)" id="targetPointCut" 
+		/> -->
+		<aop:pointcut expression="bean(target)" id="targetPointCut" />
+
+		<!-- 环绕通知切面 -->
+		<aop:aspect ref="testAround">
+			<!-- 环绕通知 -->
+			<aop:around method="doAround" pointcut-ref="targetPointCut" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<!-- 被代理的类 -->
+	<bean id="orginDaoImpl" class="com.hwua.TestBefore.OrginDaoImpl"></bean>
+	<!-- 代理类  即切面程序 -->
+	<bean id="timer" class="com.hwua.TestBefore.Timer"></bean>
+
+	<!-- 使用aop标签 进行配置 -->
+	<aop:config>
+	     <!-- 指定切面 代理类 -->
+		<aop:aspect ref="timer">
+			<!-- 指定dao层或biz层哪些方法 进行增强 切入点 指定哪些方法 -->
+			<aop:pointcut expression="within(com.hwua.TestBefore.OrginDaoImpl)" id="targetPointCut"/>
+			<!-- method 代理类的方法 -->
+			<aop:before method="showTime" pointcut-ref="targetPointCut"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

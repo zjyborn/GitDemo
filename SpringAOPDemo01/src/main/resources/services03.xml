@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<bean class="com.hwua.bean.Target" id="target"></bean>
+	<bean class="com.hwua.test01.TestBefore" id="testBefore"></bean>
+	<bean class="com.hwua.test02.TestAfterReturn" id="testAfterReturn"></bean>
+	<bean class="com.hwua.test03.TestThrowing" id="testThrowing"></bean>
+	<!-- AOP配置根标签 -->
+	<aop:config>
+		<!-- 切入点配置：expression切入点表达式 -->
+		<aop:pointcut expression="execution(* com.hwua.bean.Target.save(*))"
+			id="targetPointCut" />
+
+		<!-- 配置前置通知切面 -->
+		<aop:aspect ref="testBefore">
+			<!-- 前置通知 -->
+			<aop:before method="doBefore" pointcut-ref="targetPointCut" />
+		</aop:aspect>
+
+
+		<!-- 配置后置通知切面 -->
+		<aop:aspect ref="testAfterReturn">
+			<!-- 后置通知 -->
+			<aop:after-returning method="testAfterReturn"
+				pointcut-ref="targetPointCut" returning="oRet" />
+		</aop:aspect>
+
+		<!-- 配置异常通知切面 -->
+		<aop:aspect ref="testThrowing">
+			<!-- 异常通知 -->
+			<aop:after-throwing method="doThrow" pointcut-ref="targetPointCut"
+				throwing="e" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

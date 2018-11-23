@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<!-- 原始类 -->
+	<bean class="com.chinasofti.bean.Target" id="target"></bean>
+	<!-- 增强类 -->
+	<bean class="com.chinasofti.test01.TestBefore" id="testBefore"></bean>
+	<!-- AOP配置跟标签 -->
+	<aop:config>
+		<!--within  execution 切入点配置：expression切入点表达式 String com.chinasofti.bean.Target.save(String)-->
+		<aop:pointcut expression="execution(* com.chinasofti.bean.Target.save(..))"
+			id="targetPointCut" />
+
+		<!-- 配置切面 -->
+		<aop:aspect ref="testBefore">
+			<!-- 前置通知 -->
+			<aop:before method="doBefore" pointcut-ref="targetPointCut" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
